@@ -37,15 +37,12 @@ Route::get('/dddd', function () {
     $form = '';
 
     foreach ($fields as $f) {
-        $field = "
+        $field = sprintf("
             <br>
             <label for='${f['name']}'>${f['name']}</label>
             <br>
-            <input name='${f['name']}' id='${f['name']}'>
-        ";
-//        if ($f['required']){
-//            $field .= ' required';
-//        }
+            <input name='${f['name']}' id='${f['name']}' %s>
+        ", $f['required'] ? 'required': '');
 
         $form .= $field;
     }
