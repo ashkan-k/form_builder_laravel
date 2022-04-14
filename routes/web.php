@@ -27,3 +27,28 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/dddd', function () {
+    $fields = [
+        'username' => ['name' => 'UserName', 'required' => true],
+        'password' => ['name' => 'Password', 'required' => false],
+    ];
+
+    $form = '';
+
+    foreach ($fields as $f) {
+        $field = "
+            <br>
+            <label for='${f['name']}'>${f['name']}</label>
+            <br>
+            <input name='${f['name']}' id='${f['name']}'>
+        ";
+//        if ($f['required']){
+//            $field .= ' required';
+//        }
+
+        $form .= $field;
+    }
+
+    return view('a', compact('form'));
+});

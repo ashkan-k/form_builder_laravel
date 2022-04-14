@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ashkan\FormBuilder\Providers;
+namespace Ashkan\FormBuilder;
 
 use Ashkan\FormBuilder\Repositories\FormBuilderRepository;
 use Illuminate\Support\ServiceProvider;
@@ -15,6 +15,6 @@ class FormBuilderServiceProvider extends ServiceProvider
         });
 
         ## Load Configs ##
-        $this->mergeConfigFrom(__DIR__ . '/config/form_builder.php' , 'comment');
+        $this->mergeConfigFrom(__DIR__ . '/config/form_builder.php', 'form_builder');
     }
 }

@@ -177,6 +177,10 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
 
+        Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+
+        Ashkan\FormBuilder\FormBuilderServiceProvider::class,
+
     ],
 
     /*
@@ -232,6 +236,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class
     ],
 
 ];
