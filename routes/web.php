@@ -30,19 +30,20 @@ Route::middleware([
 
 Route::get('/dddd', function () {
     $fields = [
-        'username' => ['name' => 'UserName', 'required' => true],
-        'password' => ['name' => 'Password', 'required' => false],
+        'username' => ['name' => 'UserName', 'required' => true, 'type' => 'text', 'class' => 'form-control'],
+        'password' => ['name' => 'Password', 'required' => false, 'type' => 'text', 'class' => 'form-control'],
     ];
 
     $form = '';
 
     foreach ($fields as $f) {
-        $field = sprintf("
-            <br>
+        if ($f['type'] == 'text') {
+            $field = sprintf("
             <label for='${f['name']}'>${f['name']}</label>
+            <input name='${f['name']}' id='${f['name']}' class='${f['class']}' %s>
             <br>
-            <input name='${f['name']}' id='${f['name']}' %s>
-        ", $f['required'] ? 'required': '');
+        ", $f['required'] ? 'required' : '');
+        }
 
         $form .= $field;
     }
