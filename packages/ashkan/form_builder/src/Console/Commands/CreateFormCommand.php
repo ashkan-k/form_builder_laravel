@@ -36,6 +36,36 @@ class CreateFormCommand extends Command
         parent::__construct();
     }
 
+    private function getNamespace()
+    {
+        return 'App\Forms';
+    }
+
+    private function getFormRoot()
+    {
+        return base_path('/app/Forms/');
+    }
+
+    private function CreateTemplate($name)
+    {
+        $namespace = $this->getNamespace();
+        $template = "<?php
+
+namespace $namespace;
+
+class $name extends Form
+{
+    public function form_builder()
+    {
+        return [];
+    }
+}
+
+        ";
+
+        return $template;
+    }
+
     /**
      * Execute the console command.
      *
@@ -44,25 +74,15 @@ class CreateFormCommand extends Command
     public function handle()
     {
         $model_name = $this->option('model');
-        $file_name = base_path('/app/Forms/') . $model_name . 'Form' . '.php';
-        $contents = "
-<?php
+        $file_name = $this->getFormRoot() . $model_name . 'Form' . '.php';
 
-namespace App\Forms;
+        $contents = $this->CreateTemplate($model_name);
 
-class SongForm extends Form
-{
-    public function form_builder()
-    {
-
-    }
-}";
-
-        if (file_exists($file_name)){
+        if (file_exists($file_name)) {
             File::delete($file_name);
         }
 
-        File::put($file_name, $contents);
+        file_put_contents($file_name, $contents);
 
         $this->info($model_name . 'Form' . '.php' . ' created in app/Forms folder...');
         return 0;
