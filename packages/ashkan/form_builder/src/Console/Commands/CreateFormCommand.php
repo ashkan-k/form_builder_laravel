@@ -50,13 +50,30 @@ class CreateFormCommand extends Command
 
     private function GetModelColumns($model)
     {
-        return DB::select('describe ' . $model->getTable());
+        return ;
     }
 
-    private function CreateTemplate($name, $fields)
+    private function CreateFieldsArray($model)
+    {
+        $fields = DB::select('describe ' . $model->getTable());
+
+        $data = [];
+        foreach ($fields as $f){
+            $data[$f->Field] = [
+                'type' => $f->Type,
+                'null' => $f->Null == 'YES' ? true : false,
+                'default' => $f->Default ? $f->Default : null,
+            ];
+        }
+
+        return $data;
+    }
+
+    private function CreateTemplate($name, $types)
     {
         $namespace = $this->getNamespace();
-        $template = "<?php
+
+        $template = vsprintf("<?php
 
 namespace $namespace;
 
@@ -64,11 +81,11 @@ class $name extends Form
 {
     public function form_builder()
     {
-        return [];
+        return [%s];
     }
 }
 
-        ";
+        ", print_r($types, true));
 
         return $template;
     }
@@ -84,7 +101,7 @@ class $name extends Form
         $file_name = $this->getFormRoot() . $model_name . 'Form' . '.php';
 
         $table_name = "App\\Models\\" . $model_name;
-        $files_data = $this->GetModelColumns(new $table_name());
+        $files_data = $this->CreateFieldsArray(new $table_name());
 
         $contents = $this->CreateTemplate($model_name, $files_data);
 
