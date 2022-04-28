@@ -53,7 +53,7 @@ class CreateFormCommand extends Command
         return DB::select('describe ' . $model->getTable());
     }
 
-    private function CreateTemplate($name)
+    private function CreateTemplate($name, $fields)
     {
         $namespace = $this->getNamespace();
         $template = "<?php
@@ -84,9 +84,9 @@ class $name extends Form
         $file_name = $this->getFormRoot() . $model_name . 'Form' . '.php';
 
         $table_name = "App\\Models\\" . $model_name;
-        dd($this->GetModelColumns(new $table_name()));
+        $files_data = $this->GetModelColumns(new $table_name());
 
-        $contents = $this->CreateTemplate($model_name);
+        $contents = $this->CreateTemplate($model_name, $files_data);
 
         if (file_exists($file_name)) {
             File::delete($file_name);
