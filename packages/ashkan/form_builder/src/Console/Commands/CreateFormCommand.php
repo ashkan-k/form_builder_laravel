@@ -5,8 +5,10 @@ namespace Ashkan\FormBuilder\Console\Commands;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Kris\LaravelFormBuilder\Field;
 use Kris\LaravelFormBuilder\Form;
 
@@ -46,6 +48,11 @@ class CreateFormCommand extends Command
         return base_path('/app/Forms/');
     }
 
+    private function GetModelColumns($model)
+    {
+        return DB::select('describe ' . $model->getTable());
+    }
+
     private function CreateTemplate($name)
     {
         $namespace = $this->getNamespace();
@@ -75,6 +82,9 @@ class $name extends Form
     {
         $model_name = $this->option('model');
         $file_name = $this->getFormRoot() . $model_name . 'Form' . '.php';
+
+        $table_name = "App\\Models\\" . $model_name;
+        dd($this->GetModelColumns(new $table_name()));
 
         $contents = $this->CreateTemplate($model_name);
 
