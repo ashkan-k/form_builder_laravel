@@ -85,7 +85,7 @@ class $name extends Form
     }
 }
 
-        ", print_r($types, true));
+        ", implode('\n', $types));
 
         return $template;
     }
